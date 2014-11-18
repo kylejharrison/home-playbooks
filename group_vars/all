@@ -1,0 +1,3 @@
+---
+# file: group_vars/all
+ansible-server-public-key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDh6OTvAXQrf8icwM7rbp7uPc7OdXJn2YPFgKj/XDekBVo5eQ27rPOVi79UfO3MO8RTeF6Z8i+drj8PINaroOdEP4vhOLPXrm48G9AveCL0jsEITU0xIAXSrKKg9mBNOanxIy7f3arYgN+swwrzzBzexdTV2fotE+pa05/5lyRLr4IVI87+Bhb6B7rL+t+o14kiPMD1nuEUaowohYLt5CLScmI4l5jpvS9oE1XeMlX89pmJA50Uaj8l9ZPVoJ3MRvU9ataEaxhbBRIxldhG4QrJdUBYTcs6rulyln+I2I+ckgTPitlk0Fs50COu8KD5W10G3XyuIcIWeWgr5vrwPpw7 jemky@Thes-MacBook-Air.local"

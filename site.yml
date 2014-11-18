@@ -1,0 +1,4 @@
+---
+# file: site.yml
+- include: bootstrap.yml
+- include: plex.yml
