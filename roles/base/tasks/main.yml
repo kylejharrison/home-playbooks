@@ -1,0 +1,9 @@
+---
+# file: roles/base/tasks/main.yml
+
+- name: Ensure latest python2 is installed
+  raw: pacman -S python2 --noconfirm --needed
+  tags: raw
+
+- name: Add ansible-server key to authorized_keys
+  authorized_key: key={{ ansible-server-public-key }} manage_dir=yes state=present user=root

@@ -1,0 +1,5 @@
+---
+# file: plex.yml
+- hosts: mediaservers
+  roles:
+    - plex
