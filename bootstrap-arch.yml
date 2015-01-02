@@ -1,0 +1,5 @@
+---
+# file: bootstrap-arch.yml
+- hosts: all
+  roles:
+    - base
