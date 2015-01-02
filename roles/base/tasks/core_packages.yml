@@ -1,4 +1,8 @@
 ---
 # File: role/base/tasks/core_packages.yml
 
-- name: ensure mkpasswd??
+- name: ensure pip
+  pacman: name=python-pip state=present
+
+- name: ensure python passlib
+  pip: name=passlib state=present

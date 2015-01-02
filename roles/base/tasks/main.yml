@@ -9,6 +9,6 @@
   authorized_key: key="{{ ansible_server_public_key }}" manage_dir=yes state=present user=root
 
 - include: cli_utils.yml
-
+- include: core_packages.yml
 #- include: user_kyle.yml
 
