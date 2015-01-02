@@ -1,5 +1,24 @@
 ---
 # File: roles/xfce/tasks/main.yml
 
-- name: ensure xfce
-  pacman: name=xfce4 state=present
+- name: ensure all xfce
+  pacman: name={{ item }} state=present
+  with_items:
+    - exo
+    - garcon
+    - gtk2-xfce-engine
+    - gtk3-xfce-engine
+    - thunar
+    - thunar-volman
+    - tumbler
+    - xfce4-appfinder
+    - xfce4-mixer
+    - xfce4-panel
+    - xfce4-power-manager
+    - xfce4-session
+    - xfce4-settings
+    - xfce4-terminal
+    - xfconf
+    - xfdesktop
+    - xfwm4
+    - xfwm4-themes
