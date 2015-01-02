@@ -15,3 +15,6 @@
 
 - name: ensure lynx
   pacman: name=lynx state=present
+
+- name: ensure vim
+  pacman: name=vim state=present

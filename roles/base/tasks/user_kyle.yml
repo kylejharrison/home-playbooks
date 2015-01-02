@@ -3,3 +3,6 @@
 
 - name: ensure user kyle
   user: generate_ssh_key=yes name=kyle shell=/usr/bin/fish state=present password="$6$rounds=100000$L1GLMUC43Ja0kUOg$CDSkgblCw5HwK5GTcvcAvoj5iaWffeK3NYMEMgkqd4dcAGeoOfAiGn3LK9Q/lfQ363/R2LuD7/vnge79cgRkN1"
+
+- name: set sudoers for kyle
+  lineinfile: dest=/etc/sudoers state=present regexp='^kyle ALL\=' line='kyle ALL=(ALL) NOPASSWD:ALL' validate='visudo -cf %s'
