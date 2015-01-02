@@ -1,0 +1,5 @@
+---
+# File: roles/xfce/tasks/main.yml
+
+- name: ensure xfce
+  pacman: name=xfce4 state=present
