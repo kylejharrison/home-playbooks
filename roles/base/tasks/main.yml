@@ -10,5 +10,5 @@
 
 - include: cli_utils.yml
 - include: core_packages.yml
-#- include: user_kyle.yml
+- include: user_kyle.yml
 
