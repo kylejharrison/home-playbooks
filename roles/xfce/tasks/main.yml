@@ -1,6 +1,9 @@
 ---
 # File: roles/xfce/tasks/main.yml
 
+- name: ensure xorg
+  pacman: name=xorg state=present
+
 - name: ensure all xfce
   pacman: name={{ item }} state=present
   with_items:
