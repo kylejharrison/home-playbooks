@@ -1,0 +1,4 @@
+---
+# File: role/base/tasks/core_packages.yml
+
+- name: ensure mkpasswd??

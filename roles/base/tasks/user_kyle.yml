@@ -1,0 +1,5 @@
+---
+# file: roles/base/tasks/user_kyle.yml
+
+- name: ensure user kyle
+  user: generate_ssh_key=yes name=kyle shell=/usr/bin/fish state=present 

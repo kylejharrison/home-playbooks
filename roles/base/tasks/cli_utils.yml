@@ -1,11 +1,17 @@
 ---
 # file: roles/base/tasks/cli_utils.yml
 
+- name: ensure fish
+  pacman: name=fish state=present
+
 - name: ensure tmux
   pacman: name=tmux state=present
 
 - name: tmux config
-  copy: src=tmux.conf dest=/root/.tmux.conf mode=0744
+  copy: src=tmux.conf dest=/etc/tmux.conf mode=0755
 
-- name: ensure fish
-  pacman: name=fish state=present
+- name: switch root to fish
+  user: name=root shell=/usr/bin/fish
+
+- name: ensure lynx
+  pacman: name=lynx state=present
