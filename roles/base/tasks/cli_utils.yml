@@ -6,3 +6,6 @@
 
 - name: tmux config
   copy: src=tmux.conf dest=/root/.tmux.conf mode=0744
+
+- name: ensure fish
+  pacman: name=fish state=present
