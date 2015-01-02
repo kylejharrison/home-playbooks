@@ -1,0 +1,8 @@
+---
+# file: roles/base/tasks/cli_utils.yml
+
+- name: ensure tmux
+  pacman: name=tmux state=present
+
+- name: tmux config
+  copy: src=tmux.conf dest=/root/.tmux.conf mode=0744
