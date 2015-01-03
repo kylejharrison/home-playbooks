@@ -1,0 +1,7 @@
+---
+# file: roles/dwm/handlers/main.yml
+
+- name: build package
+  command: makepkg -eif --noconfirm chdir={{ dwm_dir }}
+  sudo: yes
+  sudo_user: kyle        

@@ -3,10 +3,7 @@
 
 - name: update config
   copy: src=config.h dest={{ dwm_dir }} owner=kyle mode=0644
+  notify: build package
 
 # insert any custom changes here
 
-- name: build package
-  command: makepkg -eif --noconfirm chdir={{ dwm_dir }}
-  sudo: yes
-  sudo_user: kyle
