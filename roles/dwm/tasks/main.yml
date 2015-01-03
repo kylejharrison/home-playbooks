@@ -44,12 +44,4 @@
 - name: install xinitrc
   copy: src=xinitrc dest=/home/kyle/.xinitrc mode=0755 owner=kyle
 
-- name: ensure mkxauth
-  pacman: name=mkxauth state=present
-
-- name: create xauthority file
-  command: mkxauth -c creates=/home/kyle/.Xauthority
-  sudo: yes
-  sudo_user: kyle
-
 - include: build_package.yml
