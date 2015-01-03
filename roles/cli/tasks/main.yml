@@ -21,3 +21,6 @@
 
 - name: ensure xterm
   pacman: name=xterm state=present
+
+- name: xterm config
+  copy: src=Xdefaults dest=/home/kyle/.Xdefaults mode=0755
