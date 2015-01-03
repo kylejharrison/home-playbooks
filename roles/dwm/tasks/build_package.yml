@@ -1,9 +1,12 @@
 ---
 # file: roles/dwm/tasks/build_package.yml
 
+- name: update config
+  copy: src=config.h dest={{ dwm_dir }} owner=kyle mode=0644
+
 # insert any custom changes here
 
 - name: build package
-  command: makepkg -if --noconfirm chdir={{ dwm_dir }}
+  command: makepkg -eif --noconfirm chdir={{ dwm_dir }}
   sudo: yes
   sudo_user: kyle
