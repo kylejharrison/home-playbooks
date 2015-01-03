@@ -41,6 +41,15 @@
 - name: set owner to kyle
   file: owner=kyle path={{ dwm_dir }} recurse=yes
 
+- name: ensure xorg-xsetroot
+  pacman: name=xorg-xsetroot state=present
+
+- name: ensure conky
+  pacman: name=conky state=present
+
+- name: conky config
+  copy: src=conky.conf dest=/etc/conky/conky.conf mode=0644
+
 - name: install xinitrc
   copy: src=xinitrc dest=/home/kyle/.xinitrc mode=0755 owner=kyle
 
