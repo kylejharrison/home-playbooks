@@ -1,0 +1,8 @@
+---
+# File: roles/ui/tasks/browsers.yml
+
+- name: install firefox
+  pacman: name=firefox state=present
+
+- name: install chromium
+  pacman: name=chromium state=present

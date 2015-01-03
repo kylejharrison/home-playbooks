@@ -1,0 +1,4 @@
+---
+# file: roles/dwm/vars/main.yml
+
+dwm_dir: /home/kyle/dwm

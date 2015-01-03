@@ -1,0 +1,4 @@
+---
+# File: roles/ui/tasks/main.yml
+
+- include: browsers.yml

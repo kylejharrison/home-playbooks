@@ -1,0 +1,55 @@
+---
+# file: roles/dwm/tasks/main.yml
+
+- name: install dwm packages
+  pacman: name={{ item }} state=present
+  with_items:
+    - autoconf
+    - automake
+    - binutils
+    - bison
+    - fakeroot
+    - file
+    - findutils
+    - flex
+    - gawk
+    - gcc
+    - gettext
+    - grep
+    - groff
+    - gzip
+    - libtool
+    - m4
+    - make
+    - pacman
+    - patch
+    - pkg-config
+    - sed
+    - sudo
+    - texinfo
+    - util-linux
+    - which
+    - abs
+    - dmenu
+
+- name: pull community verison with abs
+  command: abs community/dwm creates=/var/abs/community/dwm
+
+- name: copy dwm to home
+  command: cp -r /var/abs/community/dwm {{ dwm_dir }} creates={{ dwm_dir }}
+
+- name: set owner to kyle
+  file: owner=kyle path={{ dwm_dir }} recurse=yes
+
+- name: install xinitrc
+  copy: src=xinitrc dest=/home/kyle/.xinitrc mode=0755 owner=kyle
+
+- name: ensure mkxauth
+  pacman: name=mkxauth state=present
+
+- name: create xauthority file
+  command: mkxauth -c creates=/home/kyle/.Xauthority
+  sudo: yes
+  sudo_user: kyle
+
+- include: build_package.yml

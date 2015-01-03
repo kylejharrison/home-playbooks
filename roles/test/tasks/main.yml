@@ -1,0 +1,5 @@
+sudo: yes
+sudo_user: kyle
+
+- name: test id
+  command: id

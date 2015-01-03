@@ -1,0 +1,5 @@
+---
+# file: xfce.yml
+- hosts: all
+  roles:
+    - xfce
