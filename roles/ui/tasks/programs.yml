@@ -53,3 +53,19 @@
 - name: link usr bin to intellij
   file: src=/opt/idea/bin/idea.sh dest=/usr/bin/intellij state=link
 
+- name: download pacmanxg
+  get_url: url=http://almin-soft.ru/data/files/pacmanxg/download.php?get=pacmanxg4.16.tar.bz2 dest=/root
+  register: pacmanxg
+  tags: new
+
+- name: make pacmanxg dir
+  file: path=/opt/Almin-Soft/pacmanxg state=directory
+  tags: new
+
+- name: extract pacmanxg
+  unarchive: src={{ pacmanxg.dest }} dest=/opt/Almin-Soft/pacmanxg creates=/opt/Almin-Soft/pacmanxg/pacmanxg
+  tags: new
+
+- name: link pacmanxg from bin
+  file: src=/opt/Almin-Soft/pacmanxg/pacmanxg dest=/usr/bin/pacmanxg state=link
+  tags: new
