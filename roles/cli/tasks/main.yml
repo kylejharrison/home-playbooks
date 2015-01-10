@@ -13,6 +13,12 @@
 - name: switch root to fish
   user: name=root shell=/usr/bin/fish
 
+- name: install fish config
+  copy: src=config.fish dest={{ item }}
+  with_items:
+    - /root/.config/fish/config.fish
+    - /home/kyle/.config/fish/config.fish
+
 - name: ensure lynx
   pacman: name=lynx state=present
 
