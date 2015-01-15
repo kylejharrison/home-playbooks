@@ -53,6 +53,67 @@
 - name: link usr bin to intellij
   file: src=/opt/idea/bin/idea.sh dest=/usr/bin/intellij state=link
 
+# pacmanxg
+# pacmanxg dependencies
+
+- name: download cmake
+  get_url: url=http://www.cmake.org/files/v3.1/cmake-3.1.0.tar.gz dest=/root
+  register: cmake
+  tags: new
+
+- name: unarchive cmake
+  unarchive: src={{ cmake.dest }} dest=/root/ creates=/root/cmake-3.1.0
+  tags: new
+
+- name: install cmake
+  command: "{{ item }}"
+  args:
+    chdir: /root/cmake-3.1.0
+    creates: /usr/local/bin/cmake
+  with_items:
+    - ./configure
+    - make install
+  tags: new
+
+- name: download yajl
+  get_url: url=http://github.com/lloyd/yajl/tarball/2.1.0 dest=/root
+  register: yajl
+  tags: new
+
+- name: unarchive yajl
+  unarchive: src={{ yajl.dest }} dest=/root/ creates=/root/lloyd-yajl-66cb08c
+  tags: new
+
+- name: install yajl
+  command: "{{ item }}"
+  args:
+    chdir: /root/lloyd-yajl-66cb08c
+    creates: /usr/local/lib/libyajl.so
+  with_items:
+    - ./configure
+    - make install
+  tags: new
+
+- name: download package-query
+  get_url: url=http://mir.archlinux.fr/~tuxce/releases/package-query/package-query-1.5.tar.gz dest=/root
+  register: packagequery
+  tags: new
+
+- name: unarchive package-query
+  unarchive: src={{ packagequery.dest }} dest=/root/ creates=/root/package-query-1.5
+  tags: new
+
+- name: make package-query
+  command: "{{ item }}"
+  args:
+    chdir: /root/package-query-1.5
+    creates: /usr/local/bin/package-query
+  with_items:
+    - ./configure
+    - make
+    - make install
+  tags: new
+
 - name: download pacmanxg
   get_url: url=http://almin-soft.ru/data/files/pacmanxg/download.php?get=pacmanxg4.16.tar.bz2 dest=/root
   register: pacmanxg
