@@ -47,6 +47,7 @@
 
 - name: install idea.sh
   copy: src=idea.sh dest=/opt/idea-IU-139.659.2/bin/idea.sh mode=0755
+
 - name: link intellij binary to main
   file: src=/opt/idea-IU-139.659.2/ dest=/opt/idea state=link
 
@@ -59,11 +60,9 @@
 - name: download cmake
   get_url: url=http://www.cmake.org/files/v3.1/cmake-3.1.0.tar.gz dest=/root
   register: cmake
-  tags: new
 
 - name: unarchive cmake
   unarchive: src={{ cmake.dest }} dest=/root/ creates=/root/cmake-3.1.0
-  tags: new
 
 - name: install cmake
   command: "{{ item }}"
@@ -73,16 +72,13 @@
   with_items:
     - ./configure
     - make install
-  tags: new
 
 - name: download yajl
   get_url: url=http://github.com/lloyd/yajl/tarball/2.1.0 dest=/root
   register: yajl
-  tags: new
 
 - name: unarchive yajl
   unarchive: src={{ yajl.dest }} dest=/root/ creates=/root/lloyd-yajl-66cb08c
-  tags: new
 
 - name: install yajl
   command: "{{ item }}"
@@ -92,16 +88,13 @@
   with_items:
     - ./configure
     - make install
-  tags: new
 
 - name: download package-query
   get_url: url=http://mir.archlinux.fr/~tuxce/releases/package-query/package-query-1.5.tar.gz dest=/root
   register: packagequery
-  tags: new
 
 - name: unarchive package-query
   unarchive: src={{ packagequery.dest }} dest=/root/ creates=/root/package-query-1.5
-  tags: new
 
 - name: make package-query
   command: "{{ item }}"
@@ -112,21 +105,30 @@
     - ./configure
     - make
     - make install
-  tags: new
+
+- name: clone yaourt repo
+  git: dest=/root/yaourt-src repo=git@github.com:archlinuxfr/yaourt.git
+
+- name: install yaourt
+  command: make install
+  args:
+    chdir: /root/yaourt-src/src
+
+- name: link pacman conf
+  file: dest=/usr/local/etc/pacman.conf src=/etc/pacman.conf state=link
+
+- name: ensure pkgfile
+  pacman: name=pkgfile state=present
 
 - name: download pacmanxg
   get_url: url=http://almin-soft.ru/data/files/pacmanxg/download.php?get=pacmanxg4.16.tar.bz2 dest=/root
   register: pacmanxg
-  tags: new
 
 - name: make pacmanxg dir
   file: path=/opt/Almin-Soft/pacmanxg state=directory
-  tags: new
 
 - name: extract pacmanxg
   unarchive: src={{ pacmanxg.dest }} dest=/opt/Almin-Soft/pacmanxg creates=/opt/Almin-Soft/pacmanxg/pacmanxg
-  tags: new
 
 - name: link pacmanxg from bin
   file: src=/opt/Almin-Soft/pacmanxg/pacmanxg dest=/usr/bin/pacmanxg state=link
-  tags: new

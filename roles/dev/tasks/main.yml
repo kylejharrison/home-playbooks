@@ -1,0 +1,24 @@
+---
+# file: roles/dev/tasks/main.yml
+
+- name: ensure maven
+  get_url: url=http://mirror.ox.ac.uk/sites/rsync.apache.org/maven/maven-3/3.2.5/binaries/apache-maven-3.2.5-bin.tar.gz dest=/root/
+  register: maven
+
+- name: unarchive maven
+  unarchive: src={{ maven.dest }} dest=/opt/ creates=/opt/apache-maven-3.2.5/ 
+
+- name: link current maven
+  file: src=/opt/apache-maven-3.2.5 dest=/opt/apache-maven state=link
+
+- name: link mvn in bin
+  file: src=/opt/apache-maven/bin/mvn dest=/usr/bin/mvn state=link
+
+- name: set git config settings
+  command: "{{ item }}"
+  with_items:
+    - git config --global user.name "Kyle Harrison"
+    - git config --global user.email kylejharrison@gmail.com
+  sudo: yes
+  sudo_user: kyle
+  tags: new
