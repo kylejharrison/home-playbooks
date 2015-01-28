@@ -31,6 +31,9 @@
     - which
     - abs
     - dmenu
+    - xorg
+
+
 
 - name: pull community verison with abs
   command: abs community/dwm creates=/var/abs/community/dwm

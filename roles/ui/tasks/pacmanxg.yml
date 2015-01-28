@@ -1,0 +1,81 @@
+# File: roles/ui/tasks/pacmanxg.yml
+# pacmanxg
+# pacmanxg dependencies
+
+- name: download cmake
+  get_url: url=http://www.cmake.org/files/v3.1/cmake-3.1.0.tar.gz dest=/root/cmake-3.1.0.tar.gz
+  register: cmake
+
+- name: unarchive cmake
+  unarchive: src={{ cmake.dest }} dest=/root/ creates=/root/cmake-3.1.0
+
+- name: install cmake
+  command: "{{ item }}"
+  args:
+    chdir: /root/cmake-3.1.0
+    creates: /usr/local/bin/cmake
+  with_items:
+    - ./configure
+    - make install
+
+- name: download yajl
+  get_url: url=http://github.com/lloyd/yajl/tarball/2.1.0 dest=/root/lloyd-yajl-2.1.0-0-ga0ecdde.tar.gz
+  register: yajl
+
+- name: unarchive yajl
+  unarchive: src={{ yajl.dest }} dest=/root/ creates=/root/lloyd-yajl-66cb08c
+
+- name: install yajl
+  command: "{{ item }}"
+  args:
+    chdir: /root/lloyd-yajl-66cb08c
+    creates: /usr/local/lib/libyajl.so
+  with_items:
+    - ./configure
+    - make install
+
+- name: download package-query
+  get_url: url=http://mir.archlinux.fr/~tuxce/releases/package-query/package-query-1.5.tar.gz dest=/root/package-query-1.5.tar.gz
+  register: packagequery
+
+
+- name: unarchive package-query
+  unarchive: src={{ packagequery.dest }} dest=/root/ creates=/root/package-query-1.5
+
+- name: make package-query
+  command: "{{ item }}"
+  args:
+    chdir: /root/package-query-1.5
+    creates: /usr/local/bin/package-query
+  with_items:
+    - ./configure
+    - make
+    - make install
+
+- name: clone yaourt repo
+  git: dest=/root/yaourt-src repo=git@github.com:archlinuxfr/yaourt.git accept_hostkey=yes
+
+- name: install yaourt
+  command: make install
+  args:
+    chdir: /root/yaourt-src/src
+
+- name: link pacman conf
+  file: dest=/usr/local/etc/pacman.conf src=/etc/pacman.conf state=link
+
+- name: ensure pkgfile
+  pacman: name=pkgfile state=present
+
+- name: download pacmanxg
+  get_url: url=http://almin-soft.ru/data/files/pacmanxg/download.php?get=pacmanxg4.16.tar.bz2 dest=/root/pacmanxg4.16.tar.bz2
+  register: pacmanxg
+
+- name: make pacmanxg dir
+  file: path=/opt/Almin-Soft/pacmanxg state=directory
+
+- name: extract pacmanxg
+  unarchive: src={{ pacmanxg.dest }} dest=/opt/Almin-Soft/pacmanxg creates=/opt/Almin-Soft/pacmanxg/pacmanxg
+
+- name: link pacmanxg from bin
+  file: src=/opt/Almin-Soft/pacmanxg/pacmanxg dest=/usr/bin/pacmanxg state=link
+                                                                                                                                                        102,0-1       Bot

@@ -13,6 +13,14 @@
 - name: switch root to fish
   user: name=root shell=/usr/bin/fish
 
+- name: ensure fish config dirs
+  file: path={{ item }} state=directory
+  with_items:
+    - /root/.config
+    - /root/.config/fish
+    - /home/kyle/.config
+    - /home/kyle/.config/fish
+
 - name: install fish config
   copy: src=config.fish dest={{ item }}
   with_items:

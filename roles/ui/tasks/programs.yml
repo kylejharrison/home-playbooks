@@ -1,9 +1,16 @@
 ---
 # file: roles/ui/tasks/programs.yml
+- debug: msg="bits {{ ansible_userspace_bits }}"
 
-- name: download telegram
+- name: download telegram 32
   get_url: url=https://tdesktop.com/linux32 dest=/root 
   register: download_result
+  when: ansible_userspace_bits == "32" 
+
+- name: download telegram 64
+  get_url: url=https://tdesktop.com/linux dest=/root/tsetup.0.7.9.tar.xz
+  register: download_result
+  when: ansible_userspace_bits == "64" 
 
 - debug: msg="downloaded {{ download_result.dest }}"
 
@@ -21,7 +28,7 @@
   pacman: name=jdk8-openjdk state=present
 
 - name: download intellij
-  get_url: url=http://download-cf.jetbrains.com/idea/ideaIU-14.0.2.tar.gz dest=/root
+  get_url: url=http://download-cf.jetbrains.com/idea/ideaIU-14.0.2.tar.gz dest=/root/ideaIU-14.0.2.tar.gz
   register: download_result_intellij
 
 - debug: msg="downloaded {{ download_result_intellij.dest }}"
@@ -30,7 +37,7 @@
   unarchive: src={{ download_result_intellij.dest }} dest=/opt/ creates=/opt/idea-IU-139.659.2
 
 - name: download wmname
-  get_url: url=http://dl.suckless.org/tools/wmname-0.1.tar.gz dest=/root
+  get_url: url=http://dl.suckless.org/tools/wmname-0.1.tar.gz dest=/root/wmname-0.1.tar.gz
   register: result_wmname
 
 - name: unpack wmname
@@ -53,82 +60,3 @@
 
 - name: link usr bin to intellij
   file: src=/opt/idea/bin/idea.sh dest=/usr/bin/intellij state=link
-
-# pacmanxg
-# pacmanxg dependencies
-
-- name: download cmake
-  get_url: url=http://www.cmake.org/files/v3.1/cmake-3.1.0.tar.gz dest=/root
-  register: cmake
-
-- name: unarchive cmake
-  unarchive: src={{ cmake.dest }} dest=/root/ creates=/root/cmake-3.1.0
-
-- name: install cmake
-  command: "{{ item }}"
-  args:
-    chdir: /root/cmake-3.1.0
-    creates: /usr/local/bin/cmake
-  with_items:
-    - ./configure
-    - make install
-
-- name: download yajl
-  get_url: url=http://github.com/lloyd/yajl/tarball/2.1.0 dest=/root
-  register: yajl
-
-- name: unarchive yajl
-  unarchive: src={{ yajl.dest }} dest=/root/ creates=/root/lloyd-yajl-66cb08c
-
-- name: install yajl
-  command: "{{ item }}"
-  args:
-    chdir: /root/lloyd-yajl-66cb08c
-    creates: /usr/local/lib/libyajl.so
-  with_items:
-    - ./configure
-    - make install
-
-- name: download package-query
-  get_url: url=http://mir.archlinux.fr/~tuxce/releases/package-query/package-query-1.5.tar.gz dest=/root
-  register: packagequery
-
-- name: unarchive package-query
-  unarchive: src={{ packagequery.dest }} dest=/root/ creates=/root/package-query-1.5
-
-- name: make package-query
-  command: "{{ item }}"
-  args:
-    chdir: /root/package-query-1.5
-    creates: /usr/local/bin/package-query
-  with_items:
-    - ./configure
-    - make
-    - make install
-
-- name: clone yaourt repo
-  git: dest=/root/yaourt-src repo=git@github.com:archlinuxfr/yaourt.git
-
-- name: install yaourt
-  command: make install
-  args:
-    chdir: /root/yaourt-src/src
-
-- name: link pacman conf
-  file: dest=/usr/local/etc/pacman.conf src=/etc/pacman.conf state=link
-
-- name: ensure pkgfile
-  pacman: name=pkgfile state=present
-
-- name: download pacmanxg
-  get_url: url=http://almin-soft.ru/data/files/pacmanxg/download.php?get=pacmanxg4.16.tar.bz2 dest=/root
-  register: pacmanxg
-
-- name: make pacmanxg dir
-  file: path=/opt/Almin-Soft/pacmanxg state=directory
-
-- name: extract pacmanxg
-  unarchive: src={{ pacmanxg.dest }} dest=/opt/Almin-Soft/pacmanxg creates=/opt/Almin-Soft/pacmanxg/pacmanxg
-
-- name: link pacmanxg from bin
-  file: src=/opt/Almin-Soft/pacmanxg/pacmanxg dest=/usr/bin/pacmanxg state=link
