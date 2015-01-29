@@ -18,6 +18,10 @@
   with_items:
     - /root/.config
     - /root/.config/fish
+
+- name: ensure kyle fish config dirs
+  file: path={{ item }} state=directory owner=kyle
+  with_items:
     - /home/kyle/.config
     - /home/kyle/.config/fish
 

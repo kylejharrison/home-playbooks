@@ -2,4 +2,5 @@ setxkbmap -layout gb
 
 (conky | while read LINE; do xsetroot -name "$LINE"; done) &
 
+export HOME=/home/kyle
 exec dwm

@@ -49,9 +49,11 @@
 
 - name: ensure conky
   pacman: name=conky state=present
+  tags: conky
 
 - name: conky config
   copy: src=conky.conf dest=/etc/conky/conky.conf mode=0644
+  tags: conky
 
 - name: install xinitrc
   copy: src=xinitrc dest=/home/kyle/.xinitrc mode=0755 owner=kyle
