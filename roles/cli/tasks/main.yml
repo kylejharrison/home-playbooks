@@ -42,3 +42,6 @@
 
 - name: xterm config
   copy: src=Xdefaults dest=/home/kyle/.Xdefaults mode=0755
+
+- name: xclip
+  pacman: name=xclip state=present
