@@ -3,8 +3,8 @@
 - debug: msg="bits {{ ansible_userspace_bits }}"
 
 - name: download telegram 32
-  get_url: url=https://tdesktop.com/linux32 dest=/root 
-  register: download_result
+  get_url: url=https://tdesktop.com/linux32 dest=/root/tsetup32.0.7.10.tar.xz
+  register: download_result_32
   when: ansible_userspace_bits == "32" 
 
 - name: download telegram 64
@@ -13,9 +13,18 @@
   when: ansible_userspace_bits == "64" 
 
 - debug: msg="downloaded {{ download_result.dest }}"
+  when: download_result.changed 
+
+- debug: msg="downloaded {{ download_result_32.dest }}"
+  when: download_result_32.changed
 
 - name: unpack telegram
-  unarchive: src={{ download_result.dest }} dest=/opt/ creates=/opt/Telegram
+  unarchive: src={{ download_result.dest }} dest=/opt/
+  when: download_result.changed 
+
+- name: unpack telegram 32
+  unarchive: src={{ download_result_32.dest }} dest=/opt/
+  when: download_result_32.changed 
 
 - name: link telegram binary
 #  command: ln -sf /opt/Telegram/Telegram /usr/bin/telegram creates=/usr/bin/telegram
