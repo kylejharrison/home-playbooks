@@ -3,7 +3,7 @@
 - debug: msg="bits {{ ansible_userspace_bits }}"
 
 - name: download telegram 32
-  get_url: url=https://tdesktop.com/linux32 dest=/root 
+  get_url: url=https://tdesktop.com/linux32 dest=/root/tsetup32.0.7.10.tar.xz
   register: download_result
   when: ansible_userspace_bits == "32" 
 
@@ -13,13 +13,16 @@
   when: ansible_userspace_bits == "64" 
 
 - debug: msg="downloaded {{ download_result.dest }}"
+  when: download_result.changed == "true"
 
 - name: unpack telegram
   unarchive: src={{ download_result.dest }} dest=/opt/ creates=/opt/Telegram
+  when: download_result.changed == "true"
 
 - name: link telegram binary
 #  command: ln -sf /opt/Telegram/Telegram /usr/bin/telegram creates=/usr/bin/telegram
   file: src=/opt/Telegram/Telegram dest=/usr/bin/telegram state=link
+  when: download_result.changed == "true"
 
 - name: ensure java7
   pacman: name=jdk7-openjdk state=present
@@ -32,9 +35,15 @@
   register: download_result_intellij
 
 - debug: msg="downloaded {{ download_result_intellij.dest }}"
+  when: download_result_intellij.changed == "true"
 
 - name: unpack intellij
+<<<<<<< HEAD
   unarchive: src={{ download_result_intellij.dest }} dest=/opt/ creates=/opt/idea-IU-139.1117.1
+=======
+  unarchive: src={{ download_result_intellij.dest }} dest=/opt/ creates=/opt/idea-IU-139.659.2
+  when: download_result_intellij.changed == "true"
+>>>>>>> 2c9be2faa388c327c960394a85796edd77d3deb4
 
 - name: download wmname
   get_url: url=http://dl.suckless.org/tools/wmname-0.1.tar.gz dest=/root/wmname-0.1.tar.gz
@@ -42,6 +51,7 @@
 
 - name: unpack wmname
   unarchive: src={{ result_wmname.dest }} dest=/root/ creates=/root/wmname-0.1
+  when: result_wmname.changed == "true"
 
 - name: install wmname
   command: "{{ item }}" 
@@ -51,12 +61,19 @@
   with_items:
     - make
     - make install
+  when: result_wmname.changed == "true"
 
 - name: install idea.sh
   copy: src=idea.sh dest=/opt/idea-IU-139.1117.1/bin/idea.sh mode=0755
 
 - name: link intellij binary to main
+<<<<<<< HEAD
   file: src=/opt/idea-IU-139.1117.1 dest=/opt/idea state=link
+=======
+  file: src=/opt/idea-IU-139.659.2/ dest=/opt/idea state=link
+  when: download_result_intellij.changed == "true"
+>>>>>>> 2c9be2faa388c327c960394a85796edd77d3deb4
 
 - name: link usr bin to intellij
   file: src=/opt/idea/bin/idea.sh dest=/usr/bin/intellij state=link
+  when: download_result_intellij.changed == "true"
