@@ -45,3 +45,6 @@
 
 - name: xclip
   pacman: name=xclip state=present
+
+- name: rfkill
+  pacman: name=rfkill state=present
